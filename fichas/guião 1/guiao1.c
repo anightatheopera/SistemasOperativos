@@ -7,8 +7,11 @@ int main(int argc, char** argv){
     char* source = argv[1];
     char* dest = argv[2];
     int fd_source = open(source,O_RDONLY);
+    int fd_dest = open(dest,O_WRONLY);
     char buf;
-    ssize_t nrd = read(fd_source, &buf, sizeof(char)); // nrd = number of bytes read
+    while(read(fd_source, &buf, sizeof(char))){
+        write(fd_dest, &buf, sizeof(char));
+    }
     close(fd_source);
-    printf("%c\n", buf);
+    close(fd_dest);
 }
