@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define BUF_SZ 2
+#define BUF_SZ 4000
 typedef struct file {
     int fd;
     char buf[BUF_SZ];
@@ -83,15 +83,20 @@ ssize_t readln2(File* f, char* line, size_t size){
 void nl(){
     char buf[1024];
     ssize_t i = 0;
-    while(readln2(STDIN_FILENO, buf,sizeof(buf))){
+    while(readln(STDIN_FILENO, buf,sizeof(buf))){
          printf("%ld: %s\n", i++, buf);
     }
     _exit(0);
 }
 
-//nl com readln: 0,00s user 0,00s system 77% cpu 0,001 total
-//nl com readln2: 0,00s user 0,00s system 1% cpu 0,054 total
+//nl com readln: indeterminado, demora demasiado tempo
+//nl com readln2: 0,00s user 0,00s system 77% cpu 0,001 total
 
 void main(){
-    nl();
+    File f = {0};
+    f.fd = STDIN_FILENO;
+    char line[1024];
+    for(size_t line_no = 1; readln(&f, line, sizeof(line)/sizeof(line[0])); line_no++){
+        printf("    %ld  %s\n", line_no, line);
+    }
 }
