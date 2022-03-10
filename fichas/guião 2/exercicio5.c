@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 #define COLS 100
 #define LINE 5
 
@@ -12,7 +13,10 @@ void fill_matrix(int* m){
     m[69] = 1;
 }
 
+
+//exercicio 5 e 6 no mesmo
 int encontraNum(int x, int m[LINE][COLS]){ 
+    pid_t children[LINE];
     for(int i = 0; i < LINE; i++){
         pid_t pid_child = fork();
         if(pid_child == 0){
@@ -23,21 +27,26 @@ int encontraNum(int x, int m[LINE][COLS]){
             }
             exit(0);
         } else {
-            continue;
+            children[i] = pid_child;
         }
     }
+
+    bool found[LINE];
     for(int i = 0; i < LINE; i++){
         int wstatus;
-        wait(&wstatus);
-        if(WEXITSTATUS(wstatus) == 1)
-            return 1;
+        waitpid(children[i], &wstatus, 0);
+        found[i] = WEXITSTATUS(wstatus);
     }
-    return 0;
+
+    for(int i = 0; i < LINE; i++){
+      printf("%s for line %d.\n", found[i] ? "found" : "not found", i);
+    }
+    return -1;
 }
 
 int main(){
     int matrix[LINE][COLS];
     fill_matrix((int*) matrix);
-    printf("resultado: %d\n", encontraNum(1,matrix));
+    printf("resultado: %d\n", encontraNum(3,matrix));
     return 0;
 }

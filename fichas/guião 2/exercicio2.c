@@ -4,9 +4,7 @@
 
 void createP(){
     pid_t proc = fork();
-    if(proc < 0){
-        _exit(1);
-    }
+    if(proc < 0) _exit(1);
     if(proc == 0){
         pid_t childPID = getpid();
         pid_t childPPID = getppid();
