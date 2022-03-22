@@ -5,6 +5,9 @@
 #include <fcntl.h>
 #include <assert.h>
 
+
+
+//afinal ta mal nao copiem
 void opcao1(){
     int novo[2];
     assert(pipe(novo) == 0);
