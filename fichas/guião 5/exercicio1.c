@@ -10,10 +10,11 @@ void opcao1(){
     assert(pipe(novo) == 0);
     pid_t pid = fork();
     if(pid){
-        write(novo[0],"yuh",3);
+        write(novo[1],"yuh",3);
     }
     else{
-        read(novo[1],"yuh",3);
+        char buf[3];
+        assert(read(novo[0],buf,3) > 0);
     }
 }
 
@@ -23,10 +24,11 @@ void opcao2(){
     pid_t pid = fork();
     if(pid){
         sleep(5);
-        write(novo[0],"yuh",3);
+        write(novo[1],"yuh",3);
     }
     else{
-        read(novo[1],"yuh",3);
+        char buf[3];
+        assert(read(novo[0],buf,3) > 0);
     }
 }
 
@@ -35,10 +37,11 @@ void opcao3(){
     assert(pipe(novo) == 0);
     pid_t pid = fork();
     if(!pid){
-        write(novo[0],"yuh",3);
+        write(novo[1],"yuh",3);
     }
     else{
-        read(novo[1],"yuh",3);
+        char buf[3];
+        assert(read(novo[0],buf,3) > 0);
     }
 }
 
