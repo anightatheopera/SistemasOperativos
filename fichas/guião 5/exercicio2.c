@@ -19,6 +19,7 @@ void alt(){
         int status;
         printf("[PAI] : esperei\n");
         close(novo[1]);
+        wait(&status);
     }
     else{
         close(novo[1]);
@@ -30,7 +31,7 @@ void alt(){
         }
         printf("[FILHO] : sai com rd = %ld %s\n", rd, strerror(errno));
         close(novo[0]);
-        wait(&status);
+        
     }
 }
 
