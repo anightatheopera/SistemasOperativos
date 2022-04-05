@@ -9,16 +9,16 @@
 
 void alt(){
     int novo[2];
-    assert(pipe(novo) == 0);
+    pipe(novo);
+    int status;
     pid_t pid = fork();
     if(pid){
-        assert(write(novo[1],"yuh",3) > 0);
+        close(novo[0]);
+        write(novo[1],"yuh",3);
         printf("[PAI] : vou esperar pelo meu filho\n");
         int status;
-        close(novo[1]);
-        wait(&status);
         printf("[PAI] : esperei\n");
-        
+        close(novo[1]);
     }
     else{
         close(novo[1]);
@@ -29,6 +29,8 @@ void alt(){
             printf("[FILHO] : li %.*s\n", 3, buf);
         }
         printf("[FILHO] : sai com rd = %ld %s\n", rd, strerror(errno));
+        close(novo[0]);
+        wait(&status);
     }
 }
 
