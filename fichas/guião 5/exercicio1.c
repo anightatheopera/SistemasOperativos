@@ -8,48 +8,75 @@
 
 void opcao1(){
     int novo[2];
-    assert(pipe(novo) == 0);
+    pipe(novo);
+    int res;
+    char buffer[20];
     pid_t pid = fork();
+    int status;
     if(pid){
-        assert(write(novo[1],"yuh",3) > 0);
+        close(novo[1]);
+		res = read(novo[0], &buffer, sizeof(buffer));
+		printf("[FILHO]: read %s from pipe res %d\n", buffer,res);
+		close(novo[0]);
+		_exit(0);
     }
     else{
-        char buf[3];
-        assert(read(novo[0],buf,3) > 0);
-        printf("[FILHO] : li %.*s\n", 3, buf);
+		close(novo[0]);
+		write(novo[1], "yuh", 3);
+		printf("[PAI]: wrote line to pipe\n");
+		close(novo[1]);
+		wait(&status);
     }
 }
 
 void opcao2(){
     int novo[2];
-    assert(pipe(novo) == 0);
+    pipe(novo);
+    int res;
+    char buffer[20];
     pid_t pid = fork();
+    int status;
     if(pid){
-        sleep(5);
-        assert(write(novo[1],"yuh",3) > 0);
+        close(novo[1]);
+		res = read(novo[0], &buffer, sizeof(buffer));
+		printf("[FILHO]: read %s from pipe res %d\n", buffer,res);
+		close(novo[0]);
+		_exit(0);
     }
     else{
-        char buf[3];
-        assert(read(novo[0],buf,3) > 0);
-        printf("[FILHO] : li %.*s\n", 3, buf);
+		close(novo[0]);
+        sleep(5);
+		write(novo[1], "yuh", 3);
+		printf("[PAI]: wrote line to pipe\n");
+		close(novo[1]);
+		wait(&status);
     }
 }
 
 void opcao3(){
     int novo[2];
-    assert(pipe(novo) == 0);
+    pipe(novo);
+    int res;
+    char buffer[20];
     pid_t pid = fork();
-    if(!pid){
-        assert(write(novo[1],"yuh",3) > 0);
+    int status;
+    if(pid){
+        close(novo[0]);
+		write(novo[1], "yuh", 3);
+		printf("[PAI]: wrote line to pipe\n");
+		close(novo[1]);
+		wait(&status);
     }
     else{
-        char buf[3];
-        assert(read(novo[0],buf,3) > 0);
-        printf("[FILHO] : li %.*s\n", 3, buf);
+        close(novo[1]);
+		res = read(novo[0], &buffer, sizeof(buffer));
+		printf("[FILHO]: read %s from pipe res %d\n", buffer,res);
+		close(novo[0]);
+		_exit(0);
     }
 }
 
 int main(){
-    opcao1();
+    opcao3();
     return 0;
 }
