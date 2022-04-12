@@ -12,7 +12,7 @@ void creates_fifo() {
 }
 
 void read_fifo() {
-    int fd = open("CLIENTE", O_RDONLY);
+    int fd = open("CLIENTE", O_RDWR);
     int nfd = open("log.txt", O_CREAT | O_RDWR, 0777);
 
     printf("Aberto\n");
