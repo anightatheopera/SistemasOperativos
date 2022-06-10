@@ -35,7 +35,7 @@ int main(){
 
     pid_t grep_pid[69] = { 0 };
 
-    multigrep("cock", files, num_files, grep_pid);
+    multigrep("stuff", files, num_files, grep_pid);
 
     size_t active_greps = num_files;
     while(active_greps > 0){
