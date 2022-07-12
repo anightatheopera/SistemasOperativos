@@ -15,11 +15,12 @@ int round(char* cmd){
     for(int i = 0; i < 100; i++){
         children[i] = fork();
         if(children[i] == 0){
-            alarm(20);
             execlp(cmd, cmd, NULL);
         }
     }
-    
+
+    alarm(20);
+
     /* await until all finished or alarm has occurred */
     while(finished < 100 && !alarm_occurred) {
             pid_t pid = wait(NULL);
@@ -42,8 +43,8 @@ int round(char* cmd){
                 kill(children[i], SIGINT);
             }
     }
-
-    }
+    return finished;
+}
 
 int correr(int n){
     int ret = 0;
